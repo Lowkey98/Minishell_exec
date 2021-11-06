@@ -47,11 +47,11 @@ void ft_export(char **args, t_envp **env_list)
     i = 0;
     if (args[1] == NULL)
         print_exp(*env_list);
-    // while (args[i])
-    // {
-    //     if (args[i][0] == '=')
-    //         printf("bash: export: `%s`: not a valid identifier\n", args[i]);
-    //     add_str_to_node(env_list, args[i]);
-    //     i++;
-    // }
+    while (args[i])
+    {
+        if (args[i][0] == '=')
+            printf("bash: export: `%s`: not a valid identifier\n", args[i]);
+        add_to_env(env_list, args[i]);
+        i++;
+    }
 }
