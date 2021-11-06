@@ -49,18 +49,15 @@ t_envp*	fill_envp(char *str)
 void	add_to_env(t_envp **head, char *str)
 {
 	t_envp *node;
-
 	t_envp *tmp;
 
 	tmp = (*head);
 	node = fill_envp(str);
-	// if empty
 	if (tmp == NULL)
 	{
 		*head = node;
 		return;
 	}
-
 	while (tmp->next != NULL)
 	{
 		if (tmp->key == node->key)
@@ -68,8 +65,9 @@ void	add_to_env(t_envp **head, char *str)
 			if (node->equal)
 			{
 				tmp->equal = 1;
-				tmp->value = ft_free_first(node->value, ft_strdup(node->value));
+				tmp->value = ft_free_first(tmp->value, ft_strdup_null(node->value));
 			}
+			free(node->value);
 			free(node->key);
 			free(node);
 			return ;
@@ -103,7 +101,6 @@ int main(int argc, char **argv, char **envp)
 		add_to_env(&env_list, envp[i]); 
 		i++;
 	}
-
 	if (argc != 1 && !argv[0]) 
         return(-1);
 	while(1)

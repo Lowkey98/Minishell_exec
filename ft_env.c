@@ -1,15 +1,24 @@
-// # include "minishell.h"
+# include "minishell.h"
 
-// void print_env(t_var *head) {
-//     t_var *current_node = head;
-//    	while ( current_node != NULL) {
-//         if (ft_strchr(current_node->var,'='))
-//             printf("%s \n", current_node->var);
-//         current_node = current_node->next;
-//     }
-// }
+void print_env(t_envp *head)
+{
+    t_envp *current_node = head;
+   	while ( current_node != NULL)
+    {
+        if (current_node->equal)
+        {
 
-// void    ft_env(t_var *var)
-// {
-//     print_env(var);
-// }
+            ft_putstr_fd(current_node->key, 1);
+            ft_putstr_fd("=", 1);
+        }
+        if (current_node->value)
+            ft_putstr_fd(current_node->value, 1);
+        ft_putstr_fd("\n", 1);
+        current_node = current_node->next;
+    }
+}
+
+void    ft_env(t_envp *env_list)
+{
+    print_env(env_list);
+}
