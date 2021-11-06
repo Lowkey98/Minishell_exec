@@ -6,7 +6,7 @@
 /*   By: ayafdel <ayafdel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:12:23 by ayafdel           #+#    #+#             */
-/*   Updated: 2021/11/06 11:12:57 by ayafdel          ###   ########.fr       */
+/*   Updated: 2021/11/06 15:50:52 by ayafdel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,5 @@ void	ft_error_two_msg(char *str_one, char *str_two);
 void	ft_free_split(char **tab);
 int		ft_indexof(char *str, char c);
 char	*ft_strdup_null(const char *s);
+int     ft_strcmp(char *str1, char *str2);
 #endif

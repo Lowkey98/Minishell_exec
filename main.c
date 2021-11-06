@@ -1,25 +1,25 @@
 # include "minishell.h"
 
-void    fill_env_list(t_envp ** env_list, char **envp)
-{
-	int i;
+// void    fill_env_list(t_envp ** env_list, char **envp)
+// {
+// 	int i;
 
-	i = 0;
-	t_envp *tmp;
-	tmp = (*env_list);
+// 	i = 0;
+// 	t_envp *tmp;
+// 	tmp = (*env_list);
 
-    while (envp[i])
-	{
-		(*env_list) = malloc(sizeof(t_envp));
-		(*env_list)->key = ft_strdup(envp[i]);
-		//break;
-		//printf("%d-%s\n",i,(*env_list)->var);
-		i++;
-		(*env_list)->next = (*env_list);
-		//*env_list->var = ft_strdup(envp[i]);
-	}
-	(*env_list) = tmp;
-}
+//     while (envp[i])
+// 	{
+// 		(*env_list) = malloc(sizeof(t_envp));
+// 		(*env_list)->key = ft_strdup(envp[i]);
+// 		//break;
+// 		//printf("%d-%s\n",i,(*env_list)->var);
+// 		i++;
+// 		(*env_list)->next = (*env_list);
+// 		//*env_list->var = ft_strdup(envp[i]);
+// 	}
+// 	(*env_list) = tmp;
+// }
 
 
 t_envp*	fill_envp(char *str)
@@ -43,7 +43,7 @@ t_envp*	fill_envp(char *str)
 		node->key = ft_strdup(str);
 		node->value = 0;
 	}
-
+	node->next=NULL;
 	return node;
 }
 void	add_to_env(t_envp **head, char *str)
@@ -53,15 +53,20 @@ void	add_to_env(t_envp **head, char *str)
 
 	tmp = (*head);
 	node = fill_envp(str);
+	printf("%s\n", node->key);
 	if (tmp == NULL)
 	{
 		*head = node;
 		return;
 	}
-	while (tmp->next != NULL)
+	printf("test\n");
+	while (tmp != NULL)
 	{
-		if (tmp->key == node->key)
+			//printf("%s\n", tmp->key);
+		//printf("%d\n",ft_strncmp(tmp->key, node->key,ft_strlen(node->key)));
+		if (!strcmp(node->key, tmp->key))
 		{
+			printf("hello\n");
 			if (node->equal)
 			{
 				tmp->equal = 1;
@@ -72,6 +77,8 @@ void	add_to_env(t_envp **head, char *str)
 			free(node);
 			return ;
 		}
+		if (tmp->next == NULL)
+			break;
 		tmp = tmp->next;
 	}
 	tmp->next = node;
@@ -114,6 +121,7 @@ int main(int argc, char **argv, char **envp)
 			ft_env(env_list);
 		if (ft_strncmp(data.arguments[0], "export", ft_strlen(data.arguments[0])) == 0)
 			ft_export(data.arguments, &env_list);
+		//ft_free_split(str);
 	}
 
 }
