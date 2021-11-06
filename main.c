@@ -58,11 +58,24 @@ void	add_to_env(t_envp **head, char *str)
 	if (tmp == NULL)
 	{
 		*head = node;
-		return ;
+		return;
 	}
-	
+
 	while (tmp->next != NULL)
+	{
+		if (tmp->key == node->key)
+		{
+			if (node->equal)
+			{
+				tmp->equal = 1;
+				tmp->value = ft_free_first(node->value, ft_strdup(node->value));
+			}
+			free(node->key);
+			free(node);
+			return ;
+		}
 		tmp = tmp->next;
+	}
 	tmp->next = node;
 }
 
