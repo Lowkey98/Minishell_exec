@@ -53,20 +53,22 @@ void	add_to_env(t_envp **head, char *str)
 
 	tmp = (*head);
 	node = fill_envp(str);
-	printf("%s\n", node->key);
+	//printf("%s\n", node->key);
+	if (env_key_error(node->key))
+        printf("bash: export: `%s`: not a valid identifier\n", node->key);
 	if (tmp == NULL)
 	{
 		*head = node;
 		return;
 	}
-	printf("test\n");
+	//printf("test\n");
 	while (tmp != NULL)
 	{
 			//printf("%s\n", tmp->key);
 		//printf("%d\n",ft_strncmp(tmp->key, node->key,ft_strlen(node->key)));
 		if (!strcmp(node->key, tmp->key))
 		{
-			printf("hello\n");
+			//printf("hello\n");
 			if (node->equal)
 			{
 				tmp->equal = 1;

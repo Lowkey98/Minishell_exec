@@ -39,6 +39,21 @@ void print_exp(t_envp *head) {
         // ft_putchar_fd('\n', 1);
     }
 }
+int     env_key_error(char *var)
+{
+    int i;
+
+    i = 1;
+    if (!ft_isalpha(var[0]) && var[0] != '_')
+        return (1);
+    while (var[i])
+    {
+        if (!ft_isalnum(var[i]) && var[i] != '_')
+            return (1);
+        i++;
+    }
+    return(0);
+}
 
 void ft_export(char **args, t_envp **env_list)
 {
@@ -51,10 +66,7 @@ void ft_export(char **args, t_envp **env_list)
     {
         while (args[i])
         {
-            if (args[i][0] == '=')
-                printf("bash: export: `%s`: not a valid identifier\n", args[i]);
-            else
-                add_to_env(env_list, args[i]);
+            add_to_env(env_list, args[i]);
             i++;
         }
     }
