@@ -12,10 +12,10 @@ void	remove_from_env(t_envp **head, char *key)
     {
         (*head) = tmp->next;
         return ;
-        //free_envp(tmp);
+        free_envp(tmp);
     }
 
-    while (tmp != NULL && strcmp(key, tmp->key))
+    while (tmp != NULL && ft_strcmp(key, tmp->key))
     {
         prev = tmp;
         tmp = tmp->next;
@@ -23,7 +23,7 @@ void	remove_from_env(t_envp **head, char *key)
     if (tmp == NULL)
         return;
     prev->next = tmp->next;
-    //free_envp(tmp);
+    free_envp(tmp);
 }
 
 void ft_unset(char **args, t_envp **env_list)

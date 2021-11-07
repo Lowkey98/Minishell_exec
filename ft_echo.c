@@ -25,15 +25,18 @@ int		ft_echo(char **tab)
 	int	n_flag;
 
 	i = 1;
-	
+	n_flag = 0;	
+
 	while (is_n(tab[i]))
 		i++;
 	if (i > 1)
 		n_flag = 1;
 	while (tab[i])
 	{
-		printf("%s",tab[i]);
+		ft_putstr_fd(tab[i], 1);
 		i++;
+		if (tab[i])
+			ft_putstr_fd(" ", 1);
 	}
 	if (!n_flag)
 		printf("\n");

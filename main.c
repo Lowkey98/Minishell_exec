@@ -26,17 +26,6 @@
 
 int main(int argc, char **argv, char **envp)
 {
-	// t_envp *test;
-	// if (argc > 0)
-	// {
-	// 	test = fill_envp(argv[1]);
-	// 	printf("key = %s\n",test->key);
-	// 	printf("equal = %d\n",test->equal);
-	// 	if (test->value)
-	// 		printf("value = %s\n",test->value);
-	// 	else
-	// 		printf("value = %p\n", test ->value);
-	// }
 	char *str;
 	int i;
 	t_data data;
@@ -63,6 +52,12 @@ int main(int argc, char **argv, char **envp)
 			ft_export(data.arguments, &env_list);
 		if (ft_strncmp(data.arguments[0], "unset", ft_strlen(data.arguments[0])) == 0)
 			ft_unset(data.arguments, &env_list);
+		if (ft_strncmp(data.arguments[0], "exit", ft_strlen(data.arguments[0])) == 0)
+			ft_exit_bi();
+		if (ft_strncmp(data.arguments[0], "pwd", ft_strlen(data.arguments[0])) == 0)
+			ft_pwd();
+		if (ft_strncmp(data.arguments[0], "cd", ft_strlen(data.arguments[0])) == 0)
+			ft_cd(data.arguments);
 		//ft_free_split(str);
 	}
 

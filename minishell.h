@@ -25,6 +25,8 @@ typedef        struct s_data{
 	t_redirection red;
 	struct s_data *next;
 }        t_data;
+void	ft_cd(char **args);
+void	ft_pwd();
 void    ft_env(t_envp *var);
 int		ft_echo(char **tab);
 void	ft_export(char **args, t_envp **env_list);
@@ -34,4 +36,5 @@ t_envp* fill_envp(char *str);
 int     env_key_error(char *var);
 void    ft_unset(char **args, t_envp **env_list);
 void    free_envp(t_envp *env);
+void	ft_exit_bi();
 #endif

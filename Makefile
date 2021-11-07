@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRC = free_struct.c main.c ft_unset.c ft_echo.c ft_pwd.c ft_cd.c ft_export.c ft_env.c
+SRC = ft_exit_bi.c free_struct.c main.c ft_unset.c ft_echo.c ft_pwd.c ft_cd.c ft_export.c ft_env.c
 
 CC = gcc
 FLAG = -Wall -Werror -Wextra -lreadline

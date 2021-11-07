@@ -18,25 +18,6 @@ void print_exp(t_envp *head) {
         }
         ft_putstr_fd("\n", 1);
         current_node = current_node->next;
-        // if ()
-        // {
-        //     if (*(ft_strchr(current_node->var, '=') + 1) == '\0')
-        //     {
-        //         ft_putstr_fd(current_node->var, 1);
-        //         ft_putstr_fd("\"\"", 1);
-        //     }
-        //     else
-        //     {
-        //         key_value = ft_split(current_node->var, '=');
-        //         ft_putstr_fd(key_value[0], 1);
-        //         ft_putstr_fd("=\"", 1);
-        //         ft_putstr_fd(ft_strchr(current_node->var, '=') + 1, 1);
-        //         ft_putchar_fd('"', 1);
-        //     }
-        // }
-        // else
-        //     ft_putstr_fd(current_node->var, 1);
-        // ft_putchar_fd('\n', 1);
     }
 }
 
@@ -86,28 +67,21 @@ void	add_to_env(t_envp **head, t_envp *node)
 	t_envp *tmp;
 
 	tmp = (*head);
-	//printf("%s\n", node->key);
 	if (tmp == NULL)
 	{
 		*head = node;
 		return;
 	}
-	//printf("test\n");
 	while (tmp != NULL)
 	{
-			//printf("%s\n", tmp->key);
-		//printf("%d\n",ft_strncmp(tmp->key, node->key,ft_strlen(node->key)));
-		if (!strcmp(node->key, tmp->key))
+		if (!ft_strcmp(node->key, tmp->key))
 		{
-			//printf("hello\n");
 			if (node->equal)
 			{
 				tmp->equal = 1;
 				tmp->value = ft_free_first(tmp->value, ft_strdup_null(node->value));
 			}
-			free(node->value);
-			free(node->key);
-			free(node);
+			free_envp(node);
 			return ;
 		}
 		if (tmp->next == NULL)

@@ -1,13 +1,19 @@
 # include "minishell.h"
 
-void	ft_cd(char *path)
+void	ft_cd(char **args)
 {
-	char buf[100];
-	if (chdir(path) == -1)
+	//char buf[100];
+	if (args[1] == NULL)
+		chdir("/Users/ayafdel");
+	else
 	{
-		printf("bash: cd: %s", path);
-		perror("");
+		if (chdir(args[1]) == -1)
+		{
+			ft_putstr_fd("bash: cd: ", 1);
+			ft_putstr_fd(args[1], 1);
+			//ft_putstr_fd(" ", 1);
+			perror(" ");
+		}
+		//printf("%s\n",getcwd(buf, sizeof(buf)));
 	}
-	printf("%s\n",getcwd(buf, sizeof(buf)));
-	
 }
