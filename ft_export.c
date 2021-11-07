@@ -39,6 +39,32 @@ void print_exp(t_envp *head) {
         // ft_putchar_fd('\n', 1);
     }
 }
+
+t_envp*	fill_envp(char *str)
+{
+	t_envp *node;
+
+	node = malloc(sizeof(t_envp));
+
+	if (ft_strchr(str, '='))
+	{
+		node->equal = 1;
+		node->key = ft_substr(str, 0, ft_indexof(str, '='));
+		if (*(ft_strchr(str,'=') + 1))
+			node->value = ft_strdup(ft_strchr(str,'=') + 1);
+		else
+			node->value = 0;
+	}
+	else
+	{
+		node->equal = 0;
+		node->key = ft_strdup(str);
+		node->value = 0;
+	}
+	node->next=NULL;
+	return node;
+}
+
 int     env_key_error(char *var)
 {
     int i;
@@ -55,9 +81,47 @@ int     env_key_error(char *var)
     return(0);
 }
 
+void	add_to_env(t_envp **head, t_envp *node)
+{
+	t_envp *tmp;
+
+	tmp = (*head);
+	//printf("%s\n", node->key);
+	if (tmp == NULL)
+	{
+		*head = node;
+		return;
+	}
+	//printf("test\n");
+	while (tmp != NULL)
+	{
+			//printf("%s\n", tmp->key);
+		//printf("%d\n",ft_strncmp(tmp->key, node->key,ft_strlen(node->key)));
+		if (!strcmp(node->key, tmp->key))
+		{
+			//printf("hello\n");
+			if (node->equal)
+			{
+				tmp->equal = 1;
+				tmp->value = ft_free_first(tmp->value, ft_strdup_null(node->value));
+			}
+			free(node->value);
+			free(node->key);
+			free(node);
+			return ;
+		}
+		if (tmp->next == NULL)
+			break;
+		tmp = tmp->next;
+	}
+	tmp->next = node;
+}
+
 void ft_export(char **args, t_envp **env_list)
 {
     int i;
+	t_envp *node;
+
 
     i = 1;
     if (args[1] == NULL)
@@ -66,7 +130,10 @@ void ft_export(char **args, t_envp **env_list)
     {
         while (args[i])
         {
-            add_to_env(env_list, args[i]);
+            node = fill_envp(args[i]);
+            if (env_key_error(node->key))
+                printf("bash: export: `%s`: not a valid identifier\n", args[i]);
+            add_to_env(env_list, node);
             i++;
         }
     }
