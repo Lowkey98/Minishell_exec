@@ -27,7 +27,7 @@ typedef        struct s_data{
 }        t_data;
 void	ft_cd(char **args);
 void	ft_pwd();
-void    ft_env(t_envp *var);
+void    ft_env(t_envp **var);
 int		ft_echo(char **tab);
 void	ft_export(char **args, t_envp **env_list);
 void	add_str_to_node(t_envp **head, char *str);

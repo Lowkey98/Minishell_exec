@@ -23,15 +23,52 @@
 
 
 
+void	ft_builtins(t_data *data, t_envp **env_list)
+{
+		if (ft_strcmp(data->arguments[0],"echo") == 0)
+			ft_echo(data->arguments); 
+		if (ft_strcmp(data->arguments[0], "env") == 0)
+			ft_env(env_list);
+		if (ft_strcmp(data->arguments[0], "export") == 0)
+			ft_export(data->arguments, env_list);
+		if (ft_strcmp(data->arguments[0], "unset") == 0)
+			ft_unset(data->arguments, env_list);
+		if (ft_strcmp(data->arguments[0], "exit") == 0)
+			ft_exit_bi();
+		if (ft_strcmp(data->arguments[0], "pwd") == 0)
+			ft_pwd();
+		if (ft_strcmp(data->arguments[0], "cd") == 0)
+			ft_cd(data->arguments);
+}
+
+int		is_builtin(char *cmd)
+{
+		if (ft_strcmp(cmd,"echo") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "env") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "export") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "unset") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "exit") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "pwd") == 0)
+			return (1);
+		if (ft_strcmp(cmd, "cd") == 0)
+			return (1);
+		return (0);
+}
 
 int main(int argc, char **argv, char **envp)
 {
 	char *str;
 	int i;
-	t_data data;
+	t_data *data;
+    t_envp *env_list;
 
 	i = 0;
-    t_envp *env_list;
+	data = malloc(sizeof(t_data));
 	while(envp[i])
 	{
 		add_to_env(&env_list, fill_envp(envp[i])); 
@@ -43,21 +80,11 @@ int main(int argc, char **argv, char **envp)
 	{
 		str = readline("shell>");
 		add_history(str);
-		data.arguments = ft_split(str, ' ');
-		if (ft_strncmp(data.arguments[0],"echo", ft_strlen(data.arguments[0])) == 0)
-			ft_echo(data.arguments);
-		if (ft_strncmp(data.arguments[0],"env", ft_strlen(data.arguments[0])) == 0)
-			ft_env(env_list);
-		if (ft_strncmp(data.arguments[0], "export", ft_strlen(data.arguments[0])) == 0)
-			ft_export(data.arguments, &env_list);
-		if (ft_strncmp(data.arguments[0], "unset", ft_strlen(data.arguments[0])) == 0)
-			ft_unset(data.arguments, &env_list);
-		if (ft_strncmp(data.arguments[0], "exit", ft_strlen(data.arguments[0])) == 0)
-			ft_exit_bi();
-		if (ft_strncmp(data.arguments[0], "pwd", ft_strlen(data.arguments[0])) == 0)
-			ft_pwd();
-		if (ft_strncmp(data.arguments[0], "cd", ft_strlen(data.arguments[0])) == 0)
-			ft_cd(data.arguments);
+		data->arguments = ft_split(str, ' ');
+		if (data->arguments[0] == NULL)
+			continue;
+		if (1 && is_builtin(data->arguments[0]))
+			ft_builtins(data, &env_list);
 		//ft_free_split(str);
 	}
 

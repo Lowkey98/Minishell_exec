@@ -1,8 +1,8 @@
 # include "minishell.h"
 
-void print_env(t_envp *head)
+void print_env(t_envp **head)
 {
-    t_envp *current_node = head;
+    t_envp *current_node = (*head);
    	while ( current_node != NULL)
     {
         if (current_node->equal)
@@ -18,7 +18,7 @@ void print_env(t_envp *head)
     }
 }
 
-void    ft_env(t_envp *env_list)
+void    ft_env(t_envp **env_list)
 {
     print_env(env_list);
 }

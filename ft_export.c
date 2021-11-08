@@ -107,7 +107,8 @@ void ft_export(char **args, t_envp **env_list)
             node = fill_envp(args[i]);
             if (env_key_error(node->key))
                 printf("bash: export: `%s`: not a valid identifier\n", args[i]);
-            add_to_env(env_list, node);
+            else
+                add_to_env(env_list, node);
             i++;
         }
     }

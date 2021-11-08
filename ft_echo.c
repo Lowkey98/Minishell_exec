@@ -7,6 +7,8 @@ int		is_n(char *str)
 
 	i = 0;
 	
+	if (str == NULL)
+		return (0);
 	if (ft_strlen(str) < 2)
 		return (0);
 	if (str[i] == '-')
@@ -27,7 +29,7 @@ int		ft_echo(char **tab)
 	i = 1;
 	n_flag = 0;	
 
-	while (is_n(tab[i]))
+	while(is_n(tab[i]))
 		i++;
 	if (i > 1)
 		n_flag = 1;
@@ -42,8 +44,3 @@ int		ft_echo(char **tab)
 		printf("\n");
 	return (0);
 }
-
-// void	ft_export(char **tab, char **envp)
-// {
-// 	print_strings(envp);
-// }
