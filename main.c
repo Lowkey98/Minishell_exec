@@ -60,11 +60,66 @@ int		is_builtin(char *cmd)
 		return (0);
 }
 
+char	*fetch_env_path(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			break ;
+		i++;
+	}
+	return (envp[i]);
+}
+
+void	error_command(char	*str)
+{
+	if (str)
+		ft_putstr_fd(str, 2);
+	ft_putstr_fd(" : command not found\n", 2);
+	exit(127);
+}
+
+char	*fetch_pathname(char	*cmd,	char	**envp)
+{
+	char	**path;
+	char	*pathname;
+	int		i;
+
+	i = 0;
+	if (!cmd)
+		error_command(NULL);
+	if (access(cmd, F_OK) == 0 && cmd[0] == '/')
+		return (ft_strdup(cmd));
+	path = ft_split(fetch_env_path(envp), ':');
+	path[0] = ft_free_first(path[0], ft_strdup(ft_strrchr(path[0], '=') + 1));
+	while (path[i])
+	{
+		pathname = ft_strjoin_char(path[i], cmd, '/');
+		if (access(pathname, F_OK) == 0)
+			break ;
+		i++;
+		free(pathname);
+		if (path[i] == 0)
+			error_command(cmd);
+	}
+	ft_free_split(path);
+	return (pathname);
+}
+
 void	ft_execute(char **args, char **envp)
 {
-	execve(args[0], args, envp);
+	char *path;
+
+	if (args[0][0] == '/' || !ft_strncmp(args[0], "./", 2))
+		path = ft_strdup(args[0]);
+	else
+		path = fetch_pathname(args[0], envp);		 
+	execve(path, args, envp);
 	perror("");
-	exit(0);
+	exit(127);
 }
 
 void	exec_cmd(char **args, char **envp)
