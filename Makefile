@@ -12,3 +12,4 @@ clean:
 			rm -f $(NAME)
 
 re: clean all
+bonus :$(NAME_BONUS)

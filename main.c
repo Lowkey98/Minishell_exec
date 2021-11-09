@@ -60,6 +60,27 @@ int		is_builtin(char *cmd)
 		return (0);
 }
 
+void	ft_execute(char **args, char **envp)
+{
+	execve(args[0], args, envp);
+	perror("");
+	exit(0);
+}
+
+void	exec_cmd(char **args, char **envp)
+{
+	//int pipe_fd[2];
+	int fork_id[2];
+
+	fork_id[0] = fork();
+	if (fork_id[0] == 0)
+	{
+		ft_execute(args, envp);
+	}
+	else
+		wait(NULL);
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	char *str;
@@ -85,7 +106,9 @@ int main(int argc, char **argv, char **envp)
 			continue;
 		if (1 && is_builtin(data->arguments[0]))
 			ft_builtins(data, &env_list);
+		else
+			exec_cmd(data->arguments, envp);
+
 		//ft_free_split(str);
 	}
-
 }
