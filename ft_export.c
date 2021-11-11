@@ -91,7 +91,7 @@ void	add_to_env(t_envp **head, t_envp *node)
 	tmp->next = node;
 }
 
-void ft_export(char **args, t_envp **env_list)
+void	ft_export(t_struct *, t_envp **env_list)
 {
     int i;
 	t_envp *node;

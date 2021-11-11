@@ -21,7 +21,7 @@ int		is_n(char *str)
 	}
 	return (0);
 }
-int		ft_echo(char **tab)
+int		ft_echo(t_data *data)
 {
 	int i;
 	int	n_flag;
@@ -29,15 +29,15 @@ int		ft_echo(char **tab)
 	i = 1;
 	n_flag = 0;	
 
-	while(is_n(tab[i]))
+	while(is_n(data->arguments[i]))
 		i++;
 	if (i > 1)
 		n_flag = 1;
-	while (tab[i])
+	while (data->arguments[i])
 	{
-		ft_putstr_fd(tab[i], 1);
+		ft_putstr_fd(data->arguments[i], 1);
 		i++;
-		if (tab[i])
+		if (data->arguments[i])
 			ft_putstr_fd(" ", 1);
 	}
 	if (!n_flag)

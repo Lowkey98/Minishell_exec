@@ -25,20 +25,21 @@
 
 void	ft_builtins(t_data *data, t_envp **env_list)
 {
+
 		if (ft_strcmp(data->arguments[0],"echo") == 0)
-			ft_echo(data->arguments); 
+			ft_echo(data); 
 		if (ft_strcmp(data->arguments[0], "env") == 0)
-			ft_env(env_list);
+			ft_env(data, env_list);
 		if (ft_strcmp(data->arguments[0], "export") == 0)
-			ft_export(data->arguments, env_list);
+			ft_export(data, env_list);
 		if (ft_strcmp(data->arguments[0], "unset") == 0)
-			ft_unset(data->arguments, env_list);
+			ft_unset(data, env_list);
 		if (ft_strcmp(data->arguments[0], "exit") == 0)
-			ft_exit_bi();
+			ft_exit();
 		if (ft_strcmp(data->arguments[0], "pwd") == 0)
 			ft_pwd();
 		if (ft_strcmp(data->arguments[0], "cd") == 0)
-			ft_cd(data->arguments);
+			ft_cd(data);
 }
 
 int		is_builtin(char *cmd)
@@ -109,31 +110,79 @@ char	*fetch_pathname(char	*cmd,	char	**envp)
 	return (pathname);
 }
 
-void	ft_execute(char **args, char **envp)
+void	ft_execute(char **args, int *fd, char **envp)
 {
 	char *path;
 
 	if (args[0][0] == '/' || !ft_strncmp(args[0], "./", 2))
 		path = ft_strdup(args[0]);
 	else
-		path = fetch_pathname(args[0], envp);		 
+		path = fetch_pathname(args[0], envp);
+	if (fd[0] != 0)
+		dup2(fd[0], STDIN_FILENO);
+	if (fd[0] != 1)
+		dup2(fd[1], STDOUT_FILENO);
 	execve(path, args, envp);
 	perror("");
 	exit(127);
 }
 
-void	exec_cmd(char **args, char **envp)
+int		fetch_fd(t_redirection *red, int **fd)
+{
+	t_redirection *tmp;
+
+	*fd = malloc(2 * sizeof(int));
+	if (*fd == NULL)
+		return (1);
+	*fd[0] = 0;
+	*fd[1] = 1;
+	tmp = red;
+	while (tmp != NULL)
+	{
+		if (tmp->type == 1)
+		{
+			*fd[0] = open(red->filename, O_RDONLY);
+			if (*fd[0] == -1)
+				return (1);
+		}
+		if (tmp->type == 0)
+		{
+			*fd[1] = open(red->filename, O_RDWR | O_CREAT | O_TRUNC, 0777);
+			return (1);
+		}
+		tmp = tmp->next;
+	}
+	return (0);
+}
+
+int		exec_cmd(t_data *data, char **envp)
 {
 	//int pipe_fd[2];
 	int fork_id[2];
-
+	int *fd;
 	fork_id[0] = fork();
 	if (fork_id[0] == 0)
 	{
-		ft_execute(args, envp);
+		fetch_fd(data->red, &fd);
+		if (fd == NULL)
+			return (-1);
+		ft_execute(data->arguments, fd, envp);
 	}
 	else
 		wait(NULL);
+	return (0);
+}
+
+t_redirection * fill_redirect()
+{
+	t_redirection *new;
+
+	new = malloc(sizeof(t_redirection));
+	new -> next = NULL;
+	new->filename = "file1";
+	new->type = 1;
+
+	return (new);
 }
 
 int main(int argc, char **argv, char **envp)
@@ -145,6 +194,7 @@ int main(int argc, char **argv, char **envp)
 
 	i = 0;
 	data = malloc(sizeof(t_data));
+
 	while(envp[i])
 	{
 		add_to_env(&env_list, fill_envp(envp[i])); 
@@ -159,10 +209,13 @@ int main(int argc, char **argv, char **envp)
 		data->arguments = ft_split(str, ' ');
 		if (data->arguments[0] == NULL)
 			continue;
+		data->red = fill_redirect();
+		//printf("%s",data->red->filename);
+
 		if (1 && is_builtin(data->arguments[0]))
 			ft_builtins(data, &env_list);
 		else
-			exec_cmd(data->arguments, envp);
+			exec_cmd(data, envp);
 
 		//ft_free_split(str);
 	}

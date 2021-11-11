@@ -18,7 +18,8 @@ void print_env(t_envp **head)
     }
 }
 
-void    ft_env(t_envp **env_list)
+void    ft_env(t_data *data, t_envp **env_list)
 {
+    (void) data;
     print_env(env_list);
 }
