@@ -3,7 +3,7 @@ NAME = minishell
 SRC = ft_exit_bi.c free_struct.c main.c ft_unset.c ft_echo.c ft_pwd.c ft_cd.c ft_export.c ft_env.c
 
 CC = gcc
-FLAG = -Wall -Werror -Wextra -lreadline
+FLAG = -Wall -Werror -Wextra -lreadline -fsanitize=address
 all :$(NAME)
 
 $(NAME): $(SRC)

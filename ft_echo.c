@@ -25,6 +25,8 @@ int		ft_echo(t_data *data)
 {
 	int i;
 	int	n_flag;
+	int	*fd;
+	int tmp_fd;
 
 	i = 1;
 	n_flag = 0;	
@@ -33,6 +35,15 @@ int		ft_echo(t_data *data)
 		i++;
 	if (i > 1)
 		n_flag = 1;
+	fetch_fd(data->red, &fd);
+	if (fd[1] != 1)
+	{
+		//printf("fd[1]=%d\n", fd[1]);
+		//printf("%d\n", fd[1]);
+		tmp_fd = dup(1);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
 	while (data->arguments[i])
 	{
 		ft_putstr_fd(data->arguments[i], 1);
@@ -42,5 +53,6 @@ int		ft_echo(t_data *data)
 	}
 	if (!n_flag)
 		printf("\n");
+	dup2(tmp_fd, 1);
 	return (0);
 }

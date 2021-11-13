@@ -91,22 +91,22 @@ void	add_to_env(t_envp **head, t_envp *node)
 	tmp->next = node;
 }
 
-void	ft_export(t_struct *, t_envp **env_list)
+void	ft_export(t_data *data, t_envp **env_list)
 {
     int i;
 	t_envp *node;
 
 
     i = 1;
-    if (args[1] == NULL)
+    if (data->arguments[1] == NULL)
         print_exp(*env_list);
     else
     {
-        while (args[i])
+        while (data->arguments[i])
         {
-            node = fill_envp(args[i]);
+            node = fill_envp(data->arguments[i]);
             if (env_key_error(node->key))
-                printf("bash: export: `%s`: not a valid identifier\n", args[i]);
+                printf("bash: export: `%s`: not a valid identifier\n", data->arguments[i]);
             else
                 add_to_env(env_list, node);
             i++;
